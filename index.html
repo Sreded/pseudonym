@@ -75,7 +75,7 @@
     function styled(alias, original) { if (original === original.toUpperCase()) return alias.toUpperCase(); if (original === original.toLowerCase()) return alias.toLowerCase(); return alias; }
     function shuffle(list) { var copy = list.slice(), i, j, tmp; for (i = copy.length - 1; i > 0; i--) { j = Math.floor(Math.random() * (i + 1)); tmp = copy[i]; copy[i] = copy[j]; copy[j] = tmp; } return copy; }
     function escapeRegExp(value) { return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-    fetch('names.json').then(function (response) { if (!response.ok) throw new Error(); return response.json(); }).then(function (data) { ['feminine','masculine','neutral'].forEach(function (group) { names[group] = Array.isArray(data[group]) ? data[group].filter(function (name) { return typeof name === 'string' && name.trim(); }).map(function (name) { return name.trim().toLowerCase(); }) : []; }); namesReady = true; status.textContent = (names.feminine.length + names.masculine.length + names.neutral.length) + ' names loaded.'; }).catch(function () { status.textContent = 'Could not load names.json. Check that it is in the same folder as this page.'; });
+    fetch('names.json').then(function (response) { if (!response.ok) throw new Error(); return response.json(); }).then(function (data) { if (Array.isArray(data)) data = { neutral: data }; ['feminine','masculine','neutral'].forEach(function (group) { names[group] = Array.isArray(data[group]) ? data[group].filter(function (name) { return typeof name === 'string' && name.trim(); }).map(function (name) { return name.trim().toLowerCase(); }) : []; }); namesReady = true; status.textContent = (names.feminine.length + names.masculine.length + names.neutral.length) + ' names loaded.'; }).catch(function () { status.textContent = 'Could not load names.json. Check that it is in the same folder as this page.'; });
     document.getElementById('generate').addEventListener('click', function () {
       var text = source.value;
       if (!text.trim()) { status.textContent = 'Add some text first.'; source.focus(); return; }
@@ -85,6 +85,7 @@
       ['feminine','masculine','neutral'].forEach(function (group) { names[group].forEach(function (name) { if (!categories[name]) { categories[name] = group; vocabulary.push(name); } }); });
       custom.forEach(function (name) { if (!categories[name]) { categories[name] = 'neutral'; vocabulary.push(name); } });
       vocabulary.sort(function (a,b) { return b.length - a.length; });
+      if (!vocabulary.length) { status.textContent = 'No names were loaded. Check names.json and reload the page.'; return; }
       var found = Object.create(null), ordered = [], pools = { feminine: shuffle(aliases.feminine), masculine: shuffle(aliases.masculine), neutral: shuffle(aliases.neutral) }, next = { feminine: 0, masculine: 0, neutral: 0 };
       var rx = new RegExp('\\b(' + vocabulary.map(escapeRegExp).join('|') + ')\\b', 'gi');
       var result = text.replace(rx, function (match) {
