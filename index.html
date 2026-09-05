@@ -1,291 +1,110 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#f5f7fb">
-    <title>Automatic Pseudonym Generator</title>
-    <style>
-        :root {
-            color-scheme: light;
-            --ink: #182033;
-            --muted: #667085;
-            --line: #dce2ee;
-            --panel: #fff;
-            --accent: #4057c9;
-            --accent-dark: #3046af;
-            --soft: #edf0ff;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: linear-gradient(150deg, #f7f8ff 0%, #f5f7fb 45%, #eef3f6 100%);
-            color: var(--ink);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
-
-        main {
-            width: min(760px, 100%);
-            margin: 0 auto;
-            padding: max(24px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
-        }
-
-        header {
-            padding: 12px 4px 22px;
-        }
-
-        h1 {
-            font-size: clamp(1.7rem, 7vw, 2.35rem);
-            line-height: 1.08;
-            letter-spacing: -.045em;
-            margin: 0 0 9px;
-        }
-
-        .intro {
-            margin: 0;
-            color: var(--muted);
-            font-size: 1rem;
-            line-height: 1.45;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, .88);
-            border: 1px solid rgba(220, 226, 238, .95);
-            border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(35, 49, 93, .06);
-            padding: 16px;
-            margin-bottom: 14px;
-        }
-
-        label,
-        .label {
-            display: block;
-            font-weight: 700;
-            font-size: .92rem;
-            margin-bottom: 8px;
-        }
-
-        textarea,
-        input,
-        .result {
-            width: 100%;
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            background: #fcfcfe;
-            color: var(--ink);
-            font: 400 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            padding: 12px;
-            -webkit-appearance: none;
-        }
-
-        textarea {
-            display: block;
-            height: 176px;
-            resize: vertical;
-            min-height: 110px;
-        }
-
-        textarea:focus,
-        input:focus {
-            outline: 3px solid rgba(64, 87, 201, .18);
-            border-color: var(--accent);
-        }
-
-        .custom-label {
-            margin-top: 14px;
-        }
-
-        .result {
-            height: 176px;
-            overflow: auto;
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 14px;
-        }
-
-        button {
-            min-height: 46px;
-            border-radius: 12px;
-            border: 0;
-            padding: 0 17px;
-            font: 700 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-            transition: transform .12s, background .12s;
-        }
-
-        button:active {
-            transform: scale(.98);
-        }
-
-        .primary {
-            background: var(--accent);
-            color: #fff;
-            flex: 1 1 200px;
-        }
-
-        .primary:hover {
-            background: var(--accent-dark);
-        }
-
-        .secondary {
-            background: var(--soft);
-            color: #263b9e;
-            flex: 0 1 auto;
-        }
-
-        .status {
-            min-height: 1.25em;
-            margin: 10px 1px 0;
-            font-size: .87rem;
-            color: var(--muted);
-        }
-
-        .key {
-            max-height: 280px;
-            overflow: auto;
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            background: #fcfcfe;
-        }
-
-        .empty {
-            padding: 17px 12px;
-            color: var(--muted);
-            font-size: .95rem;
-        }
-
-        .key-row {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            gap: 9px;
-            align-items: center;
-            padding: 11px 12px;
-            border-bottom: 1px solid #edf0f5;
-            font-size: .96rem;
-        }
-
-        .key-row:last-child {
-            border-bottom: 0;
-        }
-
-        .arrow {
-            color: #8993a5;
-        }
-
-        .pseudo {
-            font-weight: 700;
-            color: #283d9f;
-        }
-
-        .note {
-            margin: 12px 2px 0;
-            color: var(--muted);
-            font-size: .8rem;
-            line-height: 1.4;
-        }
-
-        @media (max-width:420px) {
-            main {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
-
-            .card {
-                padding: 14px;
-                border-radius: 15px;
-            }
-
-            .actions button {
-                width: 100%;
-            }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Automatic Pseudonym Generator</title>
+  <style>
+    :root { color-scheme: light; --ink:#182033; --muted:#667085; --line:#dce2ee; --panel:#fff; --accent:#4057c9; --accent-dark:#3046af; --soft:#edf0ff; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; background:linear-gradient(150deg,#f7f8ff 0%,#f5f7fb 45%,#eef3f6 100%); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(760px,100%); margin:0 auto; padding:max(24px,env(safe-area-inset-top)) 16px max(32px,env(safe-area-inset-bottom)); }
+    header { padding:12px 4px 22px; }
+    h1 { font-size:clamp(1.7rem,7vw,2.35rem); line-height:1.08; letter-spacing:-.045em; margin:0 0 9px; }
+    .intro { margin:0; color:var(--muted); font-size:1rem; line-height:1.45; }
+    .card { background:rgba(255,255,255,.88); border:1px solid rgba(220,226,238,.95); border-radius:18px; box-shadow:0 10px 30px rgba(35,49,93,.06); padding:16px; margin-bottom:14px; }
+    label, .label { display:block; font-weight:700; font-size:.92rem; margin-bottom:8px; }
+    textarea, input, .result { width:100%; border:1px solid var(--line); border-radius:12px; background:#fcfcfe; color:var(--ink); font:400 16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; padding:12px; -webkit-appearance:none; }
+    textarea { display:block; height:176px; resize:vertical; min-height:110px; }
+    textarea:focus, input:focus { outline:3px solid rgba(64,87,201,.18); border-color:var(--accent); }
+    .custom-label { margin-top:14px; }
+    .result { height:176px; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+    button { min-height:46px; border-radius:12px; border:0; padding:0 17px; font:700 16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:transform .12s, background .12s; }
+    button:active { transform:scale(.98); }
+    .primary { background:var(--accent); color:#fff; flex:1 1 200px; } .primary:hover { background:var(--accent-dark); }
+    .secondary { background:var(--soft); color:#263b9e; flex:0 1 auto; }
+    .status { min-height:1.25em; margin:10px 1px 0; font-size:.87rem; color:var(--muted); }
+    .key { max-height:280px; overflow:auto; border:1px solid var(--line); border-radius:12px; background:#fcfcfe; }
+    .empty { padding:17px 12px; color:var(--muted); font-size:.95rem; }
+    .key-row { display:grid; grid-template-columns:1fr auto 1fr; gap:9px; align-items:center; padding:11px 12px; border-bottom:1px solid #edf0f5; font-size:.96rem; }
+    .key-row:last-child { border-bottom:0; } .arrow { color:#8993a5; } .pseudo { font-weight:700; color:#283d9f; }
+    .note { margin:12px 2px 0; color:var(--muted); font-size:.8rem; line-height:1.4; }
+    @media (max-width:420px) { main { padding-left:12px; padding-right:12px; } .card { padding:14px; border-radius:15px; } .actions button { width:100%; } }
+  </style>
 </head>
-
 <body>
-    <main>
-        <header>
-            <h1>Automatic Pseudonym Generator</h1>
-            <p class="intro">Replace recognized names with consistent pseudonyms, then copy the anonymized text.</p>
-        </header>
+  <main>
+    <header>
+      <h1>Automatic Pseudonym Generator</h1>
+      <p class="intro">Replace recognized names with consistent pseudonyms, then copy the anonymized text.</p>
+    </header>
 
-        <section class="card">
-            <label for="source">Original text</label>
-            <textarea id="source" autocapitalize="sentences" spellcheck="true"
-                placeholder="Paste or type your text here…"></textarea>
-            <label for="customNames" class="custom-label">Optional names to replace</label>
-            <input id="customNames" type="text" autocapitalize="words" placeholder="e.g., Amina, Will, Dr. Santos">
-            <div class="actions"><button class="primary" id="generate" type="button">Generate pseudonyms</button></div>
-            <p class="status" id="status" role="status" aria-live="polite"></p>
-        </section>
+    <section class="card">
+      <label for="source">Original text</label>
+      <textarea id="source" autocapitalize="sentences" spellcheck="true" placeholder="Paste or type your text here…"></textarea>
+      <label for="customNames" class="custom-label">Optional names to replace</label>
+      <input id="customNames" type="text" autocapitalize="words" placeholder="e.g., Amina, Will, Dr. Santos">
+      <div class="actions"><button class="primary" id="generate" type="button">Generate pseudonyms</button></div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </section>
 
-        <section class="card">
-            <span class="label">Pseudonymized text</span>
-            <div class="result" id="output" tabindex="0" aria-label="Pseudonymized text">Your updated text will appear
-                here.</div>
-            <div class="actions"><button class="secondary" id="copy" type="button">Copy to clipboard</button></div>
-        </section>
+    <section class="card">
+      <span class="label">Pseudonymized text</span>
+      <div class="result" id="output" tabindex="0" aria-label="Pseudonymized text">Your updated text will appear here.</div>
+      <div class="actions"><button class="secondary" id="copy" type="button">Copy to clipboard</button></div>
+    </section>
 
-        <section class="card">
-            <span class="label">Pseudonym key</span>
-            <div class="key" id="key" aria-live="polite">
-                <div class="empty">Generate text to see the name mapping.</div>
-            </div>
-            <p class="note">Names are matched without regard to capitalization. The recognized-name list is loaded from
-                <code>names.json</code> in this folder, so you can add names whenever needed. Review the result before
-                sharing.</p>
-        </section>
-    </main>
-    <script>
-        (function () {
-            var names = [], namesReady = false;
-            var aliases = ['Avery', 'Blair', 'Cameron', 'Casey', 'Dakota', 'Eden', 'Finley', 'Harper', 'Indigo', 'Jules', 'Kai', 'Lennon', 'Marley', 'Noel', 'Oakley', 'Parker', 'Quinn', 'Reese', 'Sage', 'Taylor', 'Wren', 'Arden', 'Briar', 'Cleo', 'Devon', 'Ellis', 'Hollis', 'Lane', 'Milan', 'Nova', 'Rowan', 'Shiloh', 'Skyler', 'Tatum', 'Valen', 'Winter', 'Zuri', 'Drew', 'Emery', 'Frankie', 'Hayden', 'Jordan', 'Logan', 'Morgan', 'Peyton', 'Riley', 'Sawyer', 'Sidney', 'Toby', 'Willow', 'Zion', 'Bailey', 'Charlie', 'Jamie', 'Kendall', 'Mika', 'Nico', 'Remy', 'Robin', 'Sasha', 'Spencer', 'Terry', 'Vaughn', 'Ari', 'Blaise', 'Cory', 'Dallas', 'Everett', 'Gale', 'Ira', 'Jaden', 'Kieran', 'Luca', 'Micah', 'Navy', 'Orion', 'Rory', 'Salem', 'Tegan', 'Wesley', 'Yuri', 'Zane'];
-            var source = document.getElementById('source'), customNames = document.getElementById('customNames'), output = document.getElementById('output'), key = document.getElementById('key'), status = document.getElementById('status');
-            function escapeHTML(value) {return value.replace(/[&<>"']/g, function (c) {return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c];});}
-            function styled(alias, original) {if (original === original.toUpperCase()) return alias.toUpperCase(); if (original === original.toLowerCase()) return alias.toLowerCase(); return alias;}
-            function shuffle(list) {var copy = list.slice(), i, j, tmp; for (i = copy.length - 1; i > 0; i--) {j = Math.floor(Math.random() * (i + 1)); tmp = copy[i]; copy[i] = copy[j]; copy[j] = tmp;} return copy;}
-            function escapeRegExp(value) {return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');}
-            fetch('names.json').then(function (response) {if (!response.ok) throw new Error(); return response.json();}).then(function (data) {names = data.filter(function (name) {return typeof name === 'string' && name.trim();}).map(function (name) {return name.trim().toLowerCase();}); namesReady = true; status.textContent = names.length + ' names loaded.';}).catch(function () {status.textContent = 'Could not load names.json. Check that it is in the same folder as this page.';});
-            document.getElementById('generate').addEventListener('click', function () {
-                var text = source.value;
-                if (!text.trim()) {status.textContent = 'Add some text first.'; source.focus(); return;}
-                if (!namesReady) {status.textContent = 'The name list is still loading. Please try again in a moment.'; return;}
-                var custom = customNames.value.split(',').map(function (name) {return name.trim().toLowerCase();}).filter(Boolean);
-                var vocabulary = names.concat(custom).filter(function (name, index, all) {return all.indexOf(name) === index;}).sort(function (a, b) {return b.length - a.length;});
-                var found = Object.create(null), ordered = [], pool = shuffle(aliases), next = 0;
-                var rx = new RegExp('\\b(' + vocabulary.map(escapeRegExp).join('|') + ')\\b', 'gi');
-                var result = text.replace(rx, function (match) {
-                    var normalized = match.toLowerCase();
-                    if (!found[normalized]) {found[normalized] = pool[next % pool.length] + (next >= pool.length ? ' ' + (Math.floor(next / pool.length) + 1) : ''); ordered.push(normalized); next++;}
-                    return styled(found[normalized], match);
-                });
-                output.textContent = result;
-                if (!ordered.length) {key.innerHTML = '<div class="empty">No recognized names were found.</div>'; status.textContent = 'No recognized names found.'; return;}
-                key.innerHTML = ordered.map(function (name) {return '<div class="key-row"><span>' + escapeHTML(name.charAt(0).toUpperCase() + name.slice(1)) + '</span><span class="arrow">→</span><span class="pseudo">' + escapeHTML(found[name]) + '</span></div>';}).join('');
-                status.textContent = ordered.length + (ordered.length === 1 ? ' name was' : ' names were') + ' replaced.';
-            });
-            document.getElementById('copy').addEventListener('click', function () {
-                var text = output.textContent;
-                if (!source.value.trim()) {status.textContent = 'Nothing to copy yet.'; return;}
-                function done() {status.textContent = 'Copied to clipboard.';}
-                if (navigator.clipboard && navigator.clipboard.writeText) {navigator.clipboard.writeText(text).then(done, fallback);} else {fallback();}
-                function fallback() {var helper = document.createElement('textarea'); helper.value = text; helper.setAttribute('readonly', ''); helper.style.position = 'fixed'; helper.style.opacity = '0'; document.body.appendChild(helper); helper.select(); try {document.execCommand('copy'); done();} catch (e) {status.textContent = 'Copy failed—select the text and copy it manually.';} document.body.removeChild(helper);}
-            });
-        }());
-    </script>
+    <section class="card">
+      <span class="label">Pseudonym key</span>
+      <div class="key" id="key" aria-live="polite"><div class="empty">Generate text to see the name mapping.</div></div>
+      <p class="note">Names are matched without regard to capitalization. The recognized-name list is loaded from <code>names.json</code> in this folder; add names to its feminine, masculine, or neutral section as needed. Review the result before sharing.</p>
+    </section>
+  </main>
+  <script>
+  (function () {
+    var names = { feminine: [], masculine: [], neutral: [] }, namesReady = false;
+    var aliases = {
+      feminine: ['Adelaide','Amelia','Beatrice','Camille','Celia','Daphne','Elise','Fiona','Georgia','Hazel','Iris','Josephine','Lila','Maeve','Naomi','Nora','Penelope','Rosalie','Sylvia','Violet','Alice','Clara','Eleanor','Freya','Gemma','Heidi','Imogen','Juliet','Leona','Margot','Nina','Opal','Phoebe','Ramona','Stella','Thea','Una','Vivian','Willa'],
+      masculine: ['Adrian','Arthur','Bennett','Calvin','Daniel','Elliot','Felix','Graham','Hugo','Isaac','Julian','Leon','Miles','Nathaniel','Oscar','Preston','Quentin','Reid','Simon','Theodore','Victor','Warren','Xavier','Zachary','Aaron','Blaine','Colin','Dominic','Emmett','Gideon','Harrison','Jasper','Kenneth','Malcolm','Nolan','Orson','Philip','Russell','Tristan','Wesley'],
+      neutral: ['Avery','Blair','Cameron','Casey','Dakota','Eden','Finley','Harper','Indigo','Jules','Kai','Lennon','Marley','Noel','Oakley','Parker','Quinn','Reese','Sage','Taylor','Wren','Arden','Briar','Devon','Ellis','Hollis','Lane','Milan','Nova','Rowan','Shiloh','Skyler','Tatum','Winter','Emery','Frankie','Hayden','Jordan','Logan','Morgan','Peyton','Riley','Sawyer','Sidney','Toby','Zion','Bailey','Charlie','Jamie','Kendall','Mika','Nico','Remy','Robin','Sasha','Spencer','Terry','Vaughn','Ari','Blaise','Cory','Dallas','Everett','Gale','Ira','Jaden','Kieran','Luca','Micah','Navy','Orion','Rory','Salem','Tegan','Yuri','Zane']
+    };
+    var source = document.getElementById('source'), customNames = document.getElementById('customNames'), output = document.getElementById('output'), key = document.getElementById('key'), status = document.getElementById('status');
+    function escapeHTML(value) { return value.replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+    function styled(alias, original) { if (original === original.toUpperCase()) return alias.toUpperCase(); if (original === original.toLowerCase()) return alias.toLowerCase(); return alias; }
+    function shuffle(list) { var copy = list.slice(), i, j, tmp; for (i = copy.length - 1; i > 0; i--) { j = Math.floor(Math.random() * (i + 1)); tmp = copy[i]; copy[i] = copy[j]; copy[j] = tmp; } return copy; }
+    function escapeRegExp(value) { return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    fetch('names.json').then(function (response) { if (!response.ok) throw new Error(); return response.json(); }).then(function (data) { ['feminine','masculine','neutral'].forEach(function (group) { names[group] = Array.isArray(data[group]) ? data[group].filter(function (name) { return typeof name === 'string' && name.trim(); }).map(function (name) { return name.trim().toLowerCase(); }) : []; }); namesReady = true; status.textContent = (names.feminine.length + names.masculine.length + names.neutral.length) + ' names loaded.'; }).catch(function () { status.textContent = 'Could not load names.json. Check that it is in the same folder as this page.'; });
+    document.getElementById('generate').addEventListener('click', function () {
+      var text = source.value;
+      if (!text.trim()) { status.textContent = 'Add some text first.'; source.focus(); return; }
+      if (!namesReady) { status.textContent = 'The name list is still loading. Please try again in a moment.'; return; }
+      var custom = customNames.value.split(',').map(function (name) { return name.trim().toLowerCase(); }).filter(Boolean);
+      var categories = Object.create(null), vocabulary = [];
+      ['feminine','masculine','neutral'].forEach(function (group) { names[group].forEach(function (name) { if (!categories[name]) { categories[name] = group; vocabulary.push(name); } }); });
+      custom.forEach(function (name) { if (!categories[name]) { categories[name] = 'neutral'; vocabulary.push(name); } });
+      vocabulary.sort(function (a,b) { return b.length - a.length; });
+      var found = Object.create(null), ordered = [], pools = { feminine: shuffle(aliases.feminine), masculine: shuffle(aliases.masculine), neutral: shuffle(aliases.neutral) }, next = { feminine: 0, masculine: 0, neutral: 0 };
+      var rx = new RegExp('\\b(' + vocabulary.map(escapeRegExp).join('|') + ')\\b', 'gi');
+      var result = text.replace(rx, function (match) {
+        var normalized = match.toLowerCase();
+        if (!found[normalized]) { var group = categories[normalized] || 'neutral', number = next[group]++, pool = pools[group]; found[normalized] = pool[number % pool.length] + (number >= pool.length ? ' ' + (Math.floor(number / pool.length) + 1) : ''); ordered.push(normalized); }
+        return styled(found[normalized], match);
+      });
+      output.textContent = result;
+      if (!ordered.length) { key.innerHTML = '<div class="empty">No recognized names were found.</div>'; status.textContent = 'No recognized names found.'; return; }
+      key.innerHTML = ordered.map(function (name) { return '<div class="key-row"><span>' + escapeHTML(name.charAt(0).toUpperCase() + name.slice(1)) + '</span><span class="arrow">→</span><span class="pseudo">' + escapeHTML(found[name]) + '</span></div>'; }).join('');
+      status.textContent = ordered.length + (ordered.length === 1 ? ' name was' : ' names were') + ' replaced.';
+    });
+    document.getElementById('copy').addEventListener('click', function () {
+      var text = output.textContent;
+      if (!source.value.trim()) { status.textContent = 'Nothing to copy yet.'; return; }
+      function done() { status.textContent = 'Copied to clipboard.'; }
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, fallback); } else { fallback(); }
+      function fallback() { var helper = document.createElement('textarea'); helper.value = text; helper.setAttribute('readonly',''); helper.style.position = 'fixed'; helper.style.opacity = '0'; document.body.appendChild(helper); helper.select(); try { document.execCommand('copy'); done(); } catch (e) { status.textContent = 'Copy failed—select the text and copy it manually.'; } document.body.removeChild(helper); }
+    });
+  }());
+  </script>
 </body>
-
 </html>
